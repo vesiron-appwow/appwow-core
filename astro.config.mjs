@@ -5,9 +5,11 @@ export default defineConfig({
   output: "server",
   adapter: cloudflare(),
 
-  vite: {
-    resolve: {
-      extensions: [".ts", ".js", ".json"]
+vite: {
+  resolve: {
+    alias: {
+      "@data": "/src/lib/data"
     }
   }
-});
+}
+  );

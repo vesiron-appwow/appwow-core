@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { getSubmissions } from "../lib/data/store";
+import { getSubmissions } from "../lib/data/store.ts";
 
 const apps = (await getSubmissions(Astro.locals.env))
   .filter(a => a.status === "approved");

@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { updateSubmissionStatus } from "../../../../lib/data/store";
+import { updateSubmissionStatus } from "../../../../lib/data/store.ts";
 
 export const POST: APIRoute = async ({ params, locals }) => {
   const { id, status } = params;

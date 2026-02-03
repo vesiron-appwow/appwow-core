@@ -1,11 +1,38 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import AppGrid from "../components/AppGrid.astro";
+import CategoryFilter from "../components/CategoryFilter.astro";
+import apps from "../data/apps.json";
+import categories from "../data/categories.json";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const url = new URL(Astro.request.url);
+const selected = url.searchParams.get("cat");
+
+const visibleApps = selected
+  ? apps.filter(a => a.category === selected)
+  : apps;
+
+const featured = visibleApps.filter(a => a.featured);
+const others = visibleApps.filter(a => !a.featured);
 ---
+<BaseLayout title="AppWow">
+  <Header />
 
-<Layout>
-	<Welcome />
-</Layout>
+  <main>
+    <CategoryFilter categories={categories} selected={selected} />
+
+    <section>
+      <h2>Featured Instant Apps</h2>
+      <AppGrid apps={featured} />
+    </section>
+
+    <section>
+      <h2>All Instant Apps</h2>
+      <AppGrid apps={others} />
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

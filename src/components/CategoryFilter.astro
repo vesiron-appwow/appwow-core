@@ -1,0 +1,22 @@
+---
+const { categories, selected } = Astro.props;
+---
+<nav>
+  <ul>
+    <li>
+      <a href="/" aria-current={!selected ? "true" : undefined}>
+        All
+      </a>
+    </li>
+    {categories.map(cat => (
+      <li>
+        <a
+          href={`/?cat=${cat.id}`}
+          aria-current={selected === cat.id ? "true" : undefined}
+        >
+          {cat.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

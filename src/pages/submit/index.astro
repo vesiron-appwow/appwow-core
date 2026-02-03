@@ -1,0 +1,36 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import SubmitForm from "../../components/SubmitForm.astro";
+import { getSession } from "../../lib/submit/auth/session.ts";
+
+const key = Astro.url.searchParams.get("key");
+const session = getSession(Astro.request);
+
+const allowed =
+  (session && (session.role === "developer" || session.role === "reviewer" || session.role === "admin")) ||
+  key === "ALPHA";
+
+if (!allowed) {
+  return Astro.redirect("/developers");
+}
+---
+<BaseLayout title="Submit — AppWow">
+  <Header />
+
+  <main>
+    <h2>Submit an Instant App</h2>
+
+    <p>
+      Use this form to submit an Instant App for review.
+      We check installability, offline support, and overall user experience.
+    </p>
+
+    <SubmitForm />
+  </main>
+
+  <Footer />
+</BaseLayout>

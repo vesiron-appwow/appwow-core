@@ -1,0 +1,8 @@
+[
+  { "id": "productivity", "label": "Productivity" },
+  { "id": "utilities", "label": "Utilities" },
+  { "id": "business", "label": "Business" },
+  { "id": "media", "label": "Media" },
+  { "id": "education", "label": "Education" },
+  { "id": "games", "label": "Games" }
+]

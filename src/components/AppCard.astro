@@ -1,0 +1,9 @@
+---
+const { app } = Astro.props;
+---
+<li>
+  <a href={`/app/${app.slug}`}>
+    <strong>{app.name}</strong>
+    <p>{app.description}</p>
+  </a>
+</li>

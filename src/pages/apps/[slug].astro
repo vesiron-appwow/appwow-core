@@ -1,0 +1,147 @@
+---
+import StoreLayout from "../../layouts/StoreLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const apps = await getCollection("apps");
+
+  return apps.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { app: entry.data },
+  }));
+}
+
+const { app } = Astro.props;
+---
+
+<StoreLayout>
+  <article class="app-detail">
+
+    <!-- Header -->
+    <header class="app-header">
+      <img
+        src={`/src/assets/app-icons/${app.icon ?? "default.png"}`}
+        alt={`${app.name} icon`}
+        width="64"
+        height="64"
+        class="app-icon"
+      />
+
+      <div class="app-meta">
+        <h1>{app.name}</h1>
+        <p class="developer">by {app.developer}</p>
+      </div>
+    </header>
+
+    <!-- Description -->
+    <section class="app-section">
+      <h2>About</h2>
+      <p>{app.description}</p>
+    </section>
+
+    <!-- Metadata -->
+    <section class="app-section meta-grid">
+      <div>
+        <strong>Category</strong>
+        <span>{app.category}</span>
+      </div>
+
+      <div>
+        <strong>Version</strong>
+        <span>{app.version}</span>
+      </div>
+
+      <div>
+        <strong>Last Updated</strong>
+        <span>{app.updatedAt}</span>
+      </div>
+
+      <div>
+        <strong>Status</strong>
+        <span>{app.status}</span>
+      </div>
+    </section>
+
+    <!-- External Launch (read-only for now) -->
+    <section class="app-section">
+      <a
+        href={app.launchUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="launch-link"
+      >
+        Visit App Website
+      </a>
+    </section>
+
+  </article>
+</StoreLayout>
+
+<style>
+.app-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.app-icon {
+  border-radius: 14px;
+}
+
+.app-meta h1 {
+  font-size: 22px;
+  margin: 0;
+}
+
+.developer {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+/* Sections */
+.app-section h2 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.app-section p {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Meta grid */
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  font-size: 14px;
+}
+
+.meta-grid strong {
+  display: block;
+  font-weight: 500;
+}
+
+.meta-grid span {
+  opacity: 0.8;
+}
+
+/* Launch link */
+.launch-link {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #f5f5f7;
+  text-align: center;
+  font-size: 14px;
+}
+</style>
+

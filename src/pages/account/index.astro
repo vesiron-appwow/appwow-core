@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { getSession } from "../../lib/submit/auth/session.ts";
+
+const session = getSession(Astro.request);
+
+if (!session) {
+  return Astro.redirect("/account/login");
+}
+---
+<BaseLayout title="Account — AppWow">
+  <Header />
+
+  <main>
+    <h2>Your account</h2>
+
+    <p>
+      Signed in as <strong>{session.email}</strong>
+    </p>
+
+    <p>
+      Role: <strong>{session.role}</strong>
+    </p>
+
+    <p>
+      <a href="/account/logout">Sign out</a>
+    </p>
+  </main>
+
+  <Footer />
+</BaseLayout>

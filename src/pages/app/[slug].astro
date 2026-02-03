@@ -1,0 +1,28 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import InstallCTA from "../../components/InstallCTA.astro";
+import apps from "../../data/apps.json";
+
+const { slug } = Astro.params;
+const app = apps.find(a => a.slug === slug);
+
+if (!app) {
+  return Astro.redirect("/");
+}
+---
+<BaseLayout title={app.name}>
+  <Header />
+
+  <main>
+    <h2>{app.name}</h2>
+    <p>{app.description}</p>
+
+    <InstallCTA url={app.url} />
+  </main>
+
+  <Footer />
+</BaseLayout>

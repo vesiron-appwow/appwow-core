@@ -1,0 +1,9 @@
+---
+import AppCard from "./AppCard.astro";
+const { apps } = Astro.props;
+---
+<ul>
+  {apps.map(app => (
+    <AppCard app={app} />
+  ))}
+</ul>

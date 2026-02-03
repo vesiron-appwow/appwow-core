@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+---
+<BaseLayout title="Sign in — AppWow">
+  <Header />
+
+  <main>
+    <h2>Sign in</h2>
+
+    <p>
+      Sign in to manage submissions and review status.
+      Browsing and installing Instant Apps never requires an account.
+    </p>
+
+    <form method="post" action="/account/login">
+      <label>
+        Email
+        <input type="email" name="email" required />
+      </label>
+
+      <label>
+        Role
+        <select name="role">
+          <option value="developer">Developer</option>
+          <option value="reviewer">Reviewer</option>
+        </select>
+      </label>
+
+      <button type="submit">Sign in</button>
+    </form>
+  </main>
+
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "weather-now",
+    "name": "Weather Now",
+    "description": "Instant offline-first weather app.",
+    "category": "utilities",
+    "icon": "/icons/weather.png",
+    "url": "https://example.com",
+    "status": "approved",
+    "featured": true
+  },
+  {
+    "slug": "quick-notes",
+    "name": "Quick Notes",
+    "description": "Simple instant notes app.",
+    "category": "productivity",
+    "icon": "/icons/notes.png",
+    "url": "https://example.com",
+    "status": "approved",
+    "featured": false
+  }
+]

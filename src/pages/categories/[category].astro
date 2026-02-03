@@ -1,0 +1,61 @@
+---
+import StoreLayout from "../../layouts/StoreLayout.astro";
+import AppCard from "../../components/AppCard.astro";
+import { getCollection } from "astro:content";
+
+// Tell Astro which category pages to build
+export async function getStaticPaths() {
+  return [
+    { params: { category: "business" } },
+    { params: { category: "productivity" } },
+    { params: { category: "media" } },
+    { params: { category: "education" } },
+    { params: { category: "games" } }
+  ];
+}
+
+const { category } = Astro.params;
+
+// Load all apps
+const allApps = await getCollection("apps");
+
+// Only approved apps in this category
+const apps = allApps
+  .map((entry) => entry.data)
+  .filter(
+    (app) =>
+      app.status === "approved" &&
+      app.category === category
+  );
+---
+
+
+<StoreLayout>
+ <h1>{category.charAt(0).toUpperCase() + category.slice(1)}</h1>
+<p style="opacity: 0.7;">
+  Browse Instant Apps in this category
+</p>
+ 
+
+  {apps.length === 0 && (
+    <p style="opacity: 0.7;">
+      No Instant Apps are available in this category yet.
+    </p>
+  )}
+
+  {apps.length > 0 && (
+    <ul style="padding: 0; margin: 0;">
+      {apps.map((app) => (
+        <AppCard app={app} />
+      ))}
+    </ul>
+  )}
+</StoreLayout>
+
+<style>
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+</style>
+

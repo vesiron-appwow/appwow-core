@@ -1,0 +1,89 @@
+---
+export const prerender = false;
+
+import StoreLayout from "../layouts/StoreLayout.astro";
+import AppCard from "../components/AppCard.astro";
+import { getCollection } from "astro:content";
+
+// Read query from URL
+const url = new URL(Astro.request.url);
+const rawQuery = url.searchParams.get("q") ?? "";
+
+const query = rawQuery.trim().toLowerCase();
+const hasQuery = query.length > 0;
+
+// Load approved apps
+const allApps = await getCollection("apps");
+const apps = allApps
+  .map((entry) => entry.data)
+  .filter((app) => app.status === "approved");
+
+// Apply search
+const results = hasQuery
+  ? apps.filter((app) => {
+      const haystack = `${app.name} ${app.description}`.toLowerCase();
+      return query
+        .split(" ")
+        .every((word) => haystack.includes(word));
+    })
+  : [];
+---
+
+<StoreLayout>
+  <h1>Search</h1>
+
+  <form method="get" action="/search" class="search-form">
+    <input
+      type="search"
+      name="q"
+      placeholder="Search Instant Apps"
+      defaultValue={rawQuery}
+    />
+    <button type="submit">Search</button>
+  </form>
+
+  {!hasQuery && (
+    <p style="opacity: 0.7;">
+      Enter a search term to find Instant Apps.
+    </p>
+  )}
+
+  {hasQuery && results.length === 0 && (
+    <p style="opacity: 0.7;">
+      No Instant Apps found matching “{rawQuery}”.
+    </p>
+  )}
+
+  {hasQuery && results.length > 0 && (
+    <ul style="padding: 0; margin: 0;">
+      {results.map((app) => (
+        <AppCard app={app} />
+      ))}
+    </ul>
+  )}
+</StoreLayout>
+
+<style>
+.search-form {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0 24px;
+}
+
+.search-form input {
+  flex: 1;
+  padding: 12px 14px;
+  font-size: 15px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+.search-form button {
+  padding: 12px 16px;
+  font-size: 14px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: #f5f5f7;
+  cursor: pointer;
+}
+</style>

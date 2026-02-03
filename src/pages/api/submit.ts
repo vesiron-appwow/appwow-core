@@ -1,38 +1,25 @@
 import type { APIRoute } from "astro";
-import { saveSubmission } from "../../lib/submit/save.ts";
+import { addSubmission } from "../../lib/data/store";
 
-/**
- * Phase 3 submission endpoint.
- *
- * Accepts submission data and acknowledges receipt.
- * Persistence is stubbed intentionally for
- * Cloudflare Pages compatibility.
- */
-export const POST: APIRoute = async ({ request }) => {
-  try {
-    const data = await request.json();
+export const POST: APIRoute = async ({ request, locals }) => {
+  const data = await request.json();
 
-    await saveSubmission(data);
+  const submission = {
+    id: crypto.randomUUID(),
+    name: data.name,
+    description: data.description,
+    category: data.category,
+    launchUrl: data.launchUrl,
+    developer: data.developer,
+    status: "pending",
+    createdAt: new Date().toISOString()
+  };
 
-    return new Response(
-      JSON.stringify({ success: true }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-  } catch (err) {
-    return new Response(
-      JSON.stringify({ success: false, error: "Invalid submission" }),
-      {
-        status: 400,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-  }
+  await addSubmission(locals.env, submission);
+
+  return new Response(
+    JSON.stringify({ success: true }),
+    { status: 200 }
+  );
 };
 

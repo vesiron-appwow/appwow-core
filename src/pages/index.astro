@@ -2,36 +2,25 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import AppGrid from "../components/AppGrid.astro";
-import CategoryFilter from "../components/CategoryFilter.astro";
-import apps from "../data/apps.json";
-import categories from "../data/categories.json";
+import { getSubmissions } from "../lib/data/store";
 
-const url = new URL(Astro.request.url);
-const selected = url.searchParams.get("cat");
-
-const visibleApps = selected
-  ? apps.filter(a => a.category === selected)
-  : apps;
-
-const featured = visibleApps.filter(a => a.featured);
-const others = visibleApps.filter(a => !a.featured);
+const apps = (await getSubmissions(Astro.locals.env))
+  .filter(a => a.status === "approved");
 ---
+
 <BaseLayout title="AppWow">
   <Header />
 
   <main>
-    <CategoryFilter categories={categories} selected={selected} />
+    <h2>Featured Instant Apps</h2>
 
-    <section>
-      <h2>Featured Instant Apps</h2>
-      <AppGrid apps={featured} />
-    </section>
-
-    <section>
-      <h2>All Instant Apps</h2>
-      <AppGrid apps={others} />
-    </section>
+    <ul>
+      {apps.map(app => (
+        <li>
+          <a href={`/apps/${app.id}`}>{app.name}</a>
+        </li>
+      ))}
+    </ul>
   </main>
 
   <Footer />

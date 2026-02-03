@@ -8,7 +8,7 @@ export default defineConfig({
 vite: {
   resolve: {
     alias: {
-      "@data": "/src/lib/data"
+
     }
   }
 }

@@ -1,26 +1,22 @@
-import fs from "node:fs";
-import path from "node:path";
+/**
+ * Phase 3 stub implementation.
+ *
+ * Submission persistence is intentionally disabled for
+ * Cloudflare Pages deployment.
+ *
+ * This file preserves the API contract so that
+ * persistence can be re-enabled in Phase 4
+ * (KV / D1 / R2) without touching callers.
+ */
 
-export function saveSubmission(data: Record<string, string>) {
-  const dir = path.resolve("src/data/submissions");
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+export async function saveSubmission(_data: unknown) {
+  // Intentionally no filesystem access.
+  // This keeps the Worker environment compatible.
 
-  const file = path.join(
-    dir,
-    `${Date.now()}-${data.name.replace(/\s+/g, "-").toLowerCase()}.json`
-  );
+  console.log("AppWow submission received (Phase 3 stub)");
 
-  fs.writeFileSync(
-    file,
-    JSON.stringify(
-      {
-        ...data,
-        status: "pending",
-        submittedAt: new Date().toISOString()
-      },
-      null,
-      2
-    )
-  );
+  return {
+    ok: true,
+    id: crypto.randomUUID(),
+  };
 }
-

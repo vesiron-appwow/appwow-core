@@ -1,6 +1,7 @@
-const cloudflare = require("@astrojs/cloudflare").default;
+import { defineConfig } from "astro/config";
+import cloudflare from "@astrojs/cloudflare";
 
-module.exports = {
+export default defineConfig({
   output: "server",
   adapter: cloudflare(),
-};
+});
